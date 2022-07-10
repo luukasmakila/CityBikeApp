@@ -11,7 +11,7 @@ const MONGO_URI = process.env.MONGO_URI
 const main = async () => {
   mongoose.connect(MONGO_URI)
   const validatedRecords = []
-  const fileName = `../<filename>`
+  const fileName = `../2021-07.csv`
   const readStream = fs.createReadStream(fileName)
   readStream.pipe(csv({}))
     .on("data", async (data) => {
@@ -34,13 +34,9 @@ const main = async () => {
       console.log("All records validated")
       console.log(`Number of validated records: ${validatedRecords.length}`)
 
-      validatedRecords.sort((a, b) => {
-        a.departure - b.departure
-      })
-
       const chunkSize = 1000
       const modelList = []
-      let key = 124
+      let key = 0
       for(let i = 0; i < validatedRecords.length; i += chunkSize) {
         const chunk = validatedRecords.slice(i, i + chunkSize)
         modelList.push(new Journeys({ primaryKey: key, journeys: chunk }))
@@ -52,18 +48,21 @@ const main = async () => {
         const uploadToDb = async (list) => {
           for(let i = 0; i < list.length; i += 100) {
             const chunk = list.slice(i, i + 100)
-            const result = Journeys.insertMany(chunk, { ordered: false })
-            console.log(i)
+            const result = await Journeys.insertMany(chunk, { ordered: false })
             if(result) console.log(result)
           }
         }
         await uploadToDb(modelList)
         mongoose.connection.close(function () {
-            console.log("complete");
-            process.exit(0);
+            console.log("complete")
+            process.exit(0)
         })
       } catch (error) {
         console.log(error)
+        mongoose.connection.close(function () {
+          console.log("exited with an error")
+          process.exit(0)
+        })
       }
     })
 }
