@@ -17,7 +17,7 @@ const handleValidation = async (document) => {
 
 const handleData = async (data, validatedRecords) => {
   let dataFields = Object.values(data)
-  let document = {
+  let document = new Journeys({
     departure: dataFields[0],
     return: dataFields[1],
     departureStationID: dataFields[2],
@@ -26,22 +26,10 @@ const handleData = async (data, validatedRecords) => {
     returnStationName: dataFields[5],
     coveredDistance: dataFields[6],
     duration: dataFields[7]
-  }
+  })
   if(await handleValidation(document)){
     validatedRecords.push(document)
   }
-}
-
-const turnToModels = async (validatedRecords) => {
-  const chunkSize = 1000
-  const modelList = []
-  let key = 1962
-  for(let i = 0; i < validatedRecords.length; i += chunkSize) {
-    const chunk = validatedRecords.slice(i, i + chunkSize)
-    modelList.push(new Journeys({ primaryKey: key, journeys: chunk }))
-    key++
-  }
-  return modelList
 }
 
 const uploadToDb = async (list) => {
@@ -64,12 +52,8 @@ const main = async () => {
     .on("end", async () => {
       console.log("All records validated")
       console.log(`Number of validated records: ${validatedRecords.length}`)
-      
-      const modelList = await turnToModels(validatedRecords)
-      console.log(modelList.length)
-
       try {
-        await uploadToDb(modelList)
+        await uploadToDb(validatedRecords)
         mongoose.connection.close(function () {
             console.log("complete")
             process.exit(0)
