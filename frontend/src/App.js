@@ -4,11 +4,12 @@ import Home from './components/Home'
 import JourneyPage from './components/JourneyPage'
 import StationPage from './components/StationPage'
 import SingleStation from './components/SingleStation'
+import "./App.css"
 
 const App = () => {
 
   return (
-    <div>
+    <div className='main'>
       <Router>
         <Routes>
           <Route path="/" element={<Home/>}/>
