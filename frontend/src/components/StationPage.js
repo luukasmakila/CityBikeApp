@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import axios from "axios"
+import { Link } from 'react-router-dom'
+import axios from "../axios"
 
 const StationPage = () => {
   const [stations, setStations] = useState([])
@@ -14,7 +15,7 @@ const StationPage = () => {
     // Fetch data only on initial page laod
     const getStations = async () => {
       try {
-        const result = await axios.get("http://localhost:3001/api/station_page")
+        const result = await axios.get("/station_page")
         setStations(result.data.stations) 
       } catch (error) {
         console.log(error)
@@ -41,7 +42,9 @@ const StationPage = () => {
       />
       {stationsToShow.map((station, idx) => (
         <div key={idx}>
-          <p>{ station.Nimi }</p>
+          <Link to={`/single_station/${station._id}`}>
+            <p>{ station.Nimi }</p>
+          </Link>
         </div>
       ))}
     </div>
