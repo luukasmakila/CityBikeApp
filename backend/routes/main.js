@@ -7,7 +7,6 @@ const Stations = require("../models/stations")
 const getJourneys = async (type, stationName) => {
   let result = []
   if(type === "starting"){
-    console.log("counting starts")
     result = await Journeys.find({
       departureStationName: stationName
     })
