@@ -61,7 +61,7 @@ const single_station = async (req, res, next) => {
 
   const stationInfo = {
     name: station.Nimi,
-    address: station.Adress,
+    address: station.Osoite,
     startingJourneys: startingJourneys.length,
     endingJourneys: endingJourneys.length,
     averageDistanceCoveredStarting: averageDistanceStarting,
