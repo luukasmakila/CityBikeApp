@@ -58,7 +58,11 @@ const single_station = async (req, res, next) => {
 
   const stationInfo = {
     name: station.Nimi,
+    namn: station.Namn,
     address: station.Osoite,
+    addressSwedish: station.Adress,
+    city: station.Kaupunki,
+    citySwedish: station.Stad,
     startingJourneys: startingJourneys.length,
     endingJourneys: endingJourneys.length,
     averageDistanceCoveredStarting: averageDistanceStarting,
