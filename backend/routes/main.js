@@ -10,12 +10,10 @@ const getJourneys = async (type, stationName) => {
     result = await Journeys.find({
       departureStationName: stationName
     })
-    //console.log(result[0])
   } else if(type === "ending"){
     result = await Journeys.find({
       returnStationName: stationName
     })
-    //console.log(result[0])
   }
   return result
 }

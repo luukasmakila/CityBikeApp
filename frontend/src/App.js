@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Header from './components/Header'
 import Home from './components/Home'
 import JourneyPage from './components/JourneyPage'
 import StationPage from './components/StationPage'
@@ -11,6 +12,7 @@ const App = () => {
   return (
     <div className='main'>
       <Router>
+        <Header/>
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/journey_page" element={<JourneyPage/>}/>
