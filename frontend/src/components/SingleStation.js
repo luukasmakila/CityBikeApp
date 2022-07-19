@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 
 const SingleStation = () => {
   const { id } = useParams()
-  const [stationInfo, setStationInfo] = useState({})
+  const [stationInfo, setStationInfo] = useState(null)
   const [language, setLanguage] = useState(true)
 
   useEffect(() => {
@@ -15,8 +15,8 @@ const SingleStation = () => {
     getStationInfo()
   }, [])
 
-  return (
-    <div>
+  const StationCard = () => {
+    return (
       <div className='station-card'>
         <h2>City: <b>{language ? stationInfo.city : stationInfo.citySwedish }</b></h2>
         <h2>Station name: <b>{language ? stationInfo.name : stationInfo.namn }</b></h2>
@@ -26,6 +26,15 @@ const SingleStation = () => {
         <h2>Average distance of journeys starting from this station: <b>{ stationInfo.averageDistanceCoveredStarting }</b></h2>
         <h2>Average distance of journeys ending at this station: <b>{ stationInfo.averageDistanceCoveredEnding }</b></h2>
       </div>
+    )
+  }
+
+  return (
+    <div>
+      {stationInfo
+        ? <StationCard/>
+        : <p>Loading station data...</p>
+      }
       <div className='language-button'>
         <button onClick={() => setLanguage(!language)}>
           Switch to {language ? "swedish" : "finnish"}
